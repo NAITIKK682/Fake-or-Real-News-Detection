@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ... (keep all your existing head content) ... -->
+    
+    <!-- Modified CSS to remove preloader styles -->
+    <style>
+        /* Remove all preloader-related styles */
+        #preloader, .neon-text {
+            display: none !important;
+        }
+        
+        /* Keep all other existing styles */
+        /* ... (rest of your CSS) ... */
+    </style>
+</head>
+
+<body>
+    <!-- Remove the entire preloader div -->
+    <!-- <div id="preloader">...</div> -->
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <!-- Logo or Title -->
+            <h2 class="navbar-title">Fake News Detection</h2>
+            
+            <!-- Navigation Links - Modified Home Link -->
+            <div class="nav-links">
+                <a href="/" class="nav-link" id="home-link">Home</a>
+                <a href="/about" class="nav-link">About Us</a>
+                <a href="/contact" class="nav-link">Contact Us</a>
+                <a href="/signin" class="nav-link signin-btn">Sign In</a>
+            </div>
+        </div>
+
+        <!-- ... (rest of your HTML content) ... -->
+    </div>
+
+    <script>
+        // Remove any preloader-related JavaScript
+        // Keep only the prediction logic
+        
+        // Prevent default behavior for home link to ensure no animation
+        document.getElementById('home-link').addEventListener('click', function(e) {
+            // If you want to ensure no animation happens at all
+            e.preventDefault();
+            window.location.href = '/'; // This will still load the page but without animation
+        });
+
+        // Keep your existing prediction logic
+        document.getElementById("check-btn").addEventListener("click", function () {
+            // ... (your existing prediction code) ...
+        });
+    </script>
+</body>
+</html>
