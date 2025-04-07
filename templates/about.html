@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: url("{{ url_for('static', filename='images/about-bg.jpg') }}") center/cover no-repeat fixed;
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            padding-top: 80px;
+            overflow-x: hidden;
+        }
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .logo h2 {
+            font-size: 24px;
+            color: #1e90ff;
+            font-weight: 600;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 8px 15px;
+            transition: 0.3s;
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #1e90ff;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: 0.3s;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #1e90ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .project-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .project-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #1e90ff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+        }
+        .project-section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .project-section ul li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .team-section {
+            margin-top: 40px;
+        }
+        h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #1e90ff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .team-members {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 220px;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+        .member:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #1e90ff;
+        }
+        .member h3 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        .member p {
+            font-size: 16px;
+            color: #ccc;
+        }
+        /* Footer Styles */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-content p {
+            font-size: 16px;
+            margin: 0;
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .social-icons a {
+            color: #fff;
+            font-size: 24px;
+            transition: 0.3s;
+        }
+        .social-icons a:hover {
+            color: #1e90ff;
+            transform: translateY(-3px);
+        }
+    </style>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <!-- Logo and Company Name -->
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Naitik Neural Networks Logo">
+            <h2>Naitech Neural Networks</h2>
+        </div>
+        <!-- Navigation -->
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+            <a href="{{ url_for('contact_page') }}">Contact Us</a>
+            <a href="{{ url_for('signin') }}">Sign In</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>About Us</h1>
+        <p>Welcome to our platform! We are dedicated to providing accurate news verification using cutting-edge AI-powered technology. Our mission is to ensure that you receive reliable and trustworthy information in an era of misinformation.</p>
+
+        <!-- Project Section -->
+        <div class="project-section">
+            <h2>About Our Project: Fake News Detection</h2>
+            <p>Our project, <strong>Fake News Detection</strong>, is designed to combat the spread of misinformation by leveraging advanced AI and machine learning techniques. Here are some key features of our project:</p>
+            <ul>
+                <li><strong>AI-Powered Analysis:</strong> Uses natural language processing (NLP) to analyze news articles and detect fake news.</li>
+                <li><strong>Real-Time Verification:</strong> Provides real-time verification of news articles to ensure accuracy.</li>
+                <li><strong>User-Friendly Interface:</strong> Easy-to-use platform for users to verify news articles quickly.</li>
+                <li><strong>Data-Driven Insights:</strong> Offers insights into the credibility of news sources and articles.</li>
+                <li><strong>Scalable Solution:</strong> Designed to handle large volumes of data and users.</li>
+            </ul>
+        </div>
+
+        <!-- Team Section -->
+        <div class="team-section">
+            <h2>Founder</h2>
+            <div class="Founder">
+                <div class="member">
+                    <img src="{{ url_for('static', filename='images/naitik.jpg') }}" alt="Naitik Kushwaha">
+                    <h3>Naitik Kushwaha</h3>
+                    <p>Project Lead & AI Developer</p>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+   <!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Naitik Neural Networks. All Rights Reserved.</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/share/1A6bgvCpts/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/yourhandle" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/mr_naitik_maurya?igsh=MTk2ZGRpdHZkdnNtcA==" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/naitik-kushwaha-a7688a320?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

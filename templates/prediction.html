@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+
+<title>Fake News Detection</title>
+
+    <!-- Bootstrap & Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+
+        /* Sidebar */
+        .sidebar {
+                    position: fixed;
+                    left: 0;
+                    top: 50px;
+                    width: 200px;
+                    height: 100%;
+                    background-color: #343a40;
+                    padding: 15px;
+                    color: white;
+                }
+                .sidebar p {
+                    margin: 10px 0;
+                }
+        
+                 /* Top Navigation Bar */
+                 .top-nav {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    background-color: #343a40;
+                    padding: 10px 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    color: white;
+                }
+                .top-nav a {
+                    color: white;
+                    margin-left: 15px;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+                .top-nav a:hover {
+                    text-decoration: underline;
+                }
+        
+                   /* Main Content */
+                   .content-container {
+                    margin-left: 220px;
+                    margin-top: 80px;
+                    text-align: center;
+                    padding: 20px;
+                }
+        
+        
+                .navbar {
+            background-color: #222;  /* Dark background */
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;  /* Stick to top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;  /* Ensure it's above other content */
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        
+        .navbar a:hover {
+            color: #f39c12;  /* Highlight on hover */
+        }
+        
+        
+                /* Form Styling */
+                .form-container {
+                    background: white;
+                    padding: 25px;
+                    border-radius: 12px;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    max-width: 600px;
+                    margin: 0 auto;
+                }
+                input[type="text"] {
+                    width: 100%;
+                    padding: 10px;
+                    border: 2px solid #ddd;
+                    border-radius: 8px;
+                    margin-bottom: 15px;
+                    font-size: 16px;
+                }
+                .btn-custom {
+                    width: 100%;
+                    background: #212529;
+                    color: white;
+                    font-size: 18px;
+                    padding: 12px;
+                    border-radius: 8px;
+                    transition: 0.11s ease-in-out;
+                }
+                .btn-custom:hover {
+                    background: #0d6efd;
+                }
+        
+                /* Full Page Preloader */
+                #preloader {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: black;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                }
+        
+                #preloader video {
+                    width: 60%;
+                    border-radius: 20px;
+                }
+        
+                /* Neon Loading Text */
+                .neon-text {
+                    font-size: 28px;
+                    font-weight: bold;
+                    color: #0ff;
+                    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #00f;
+                    margin-top: 10px;
+                }
+        
+                /* Hide Main Content Initially */
+                #main-content {
+                    display: none;
+                }
+        
+                /* Smooth Fade-out Animation */
+                .fade-out {
+                    opacity: 0;
+                    transition: opacity 1s ease-out;
+                }
+        
+                /* Page Background */
+                body {
+                    background-color: #f8f9fa;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+        
+                /* Top Header */
+                .navbar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    background-color: #343a40;
+                    padding: 12px 20px;
+                }
+        
+                .navbar h3 {
+                    color: white;
+                    font-weight: bold;
+                    margin: 0;
+                    font-size: 20px;
+                }
+        
+                /* Centered Content */
+                .content-container {
+                    text-align: center;
+                    width: 100%;
+                    max-width: 600px;
+                    margin-top: 60px;
+                }
+        
+                /* Input Form Box */
+                .form-container {
+                    background: white;
+                    padding: 25px;
+                    border-radius: 12px;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    text-align: center;
+                }
+        
+                /* Input Box */
+                input[type="text"] {
+                    width: 100%;
+                    padding: 10px;
+                    border: 2px solid #ddd;
+                    border-radius: 8px;
+                    margin-bottom: 15px;
+                    font-size: 16px;
+                }
+        
+                /* Dark Stylish Buttons */
+                .btn-custom {
+                    width: 100%;
+                    background: #212529;
+                    color: white;
+                    font-size: 18px;
+                    padding: 12px;
+                    border-radius: 8px;
+                    transition: 0.11s ease-in-out;
+                }
+        
+                .btn-custom:hover {
+                    background: #0d6efd;
+                }
+        
+                /* Prediction Button */
+                .btn-predict {
+                    width: 100%;
+                    color: white;
+                    font-size: 22px;
+                    font-weight: bold;
+                    padding: 15px;
+                    border-radius: 8px;
+                    margin-top: 15px;
+                    transition: 0.11s ease-in-out;
+                    border: none;
+                    background: #198754;
+                }
+        
+                .btn-predict:hover {
+                    background: #145c32;
+                }
+        
+                /* Button styles for Fake and Real */
+                .fake-btn {
+                    background: red !important;
+                    font-weight: bold !important;
+                }
+        
+                .real-btn {
+                    background: blue !important;
+                    font-weight: bold !important;
+                }
+        
+                /* Real/Fake Text Styling */
+                .real {
+                    color: blue;
+                    font-weight: bold;
+                    font-size: 24px;
+                }
+        
+                .fake {
+                    color: red;
+                    font-weight: bold;
+                    font-size: 24px;
+                }
+        
+                .green-text {
+                    color: green;
+                    font-weight: bold;
+                }
+            </style>
+
+
+
+
+    
+</head>
+
+<body>
+
+    <!-- Preloader with Neon Light Video and Stylish Text -->
+    <div id="preloader">
+        <video autoplay muted loop>
+            <source src="{{ url_for('static', filename='loading.mp4') }}" type="video/mp4">
+        </video>
+        <h2 class="neon-text">Loading... Please Wait</h2>
+    </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div id="main-content">
+        <!-- Top Left Header Bar -->
+        <nav class="navbar">
+            <h3>Fake News Detection</h3>
+        </nav>
+
+         <!-- Navigation Bar -->
+<div class="navbar">
+    <!-- Logo or Title -->
+    <h2 class="navbar-title">Fake News Detection</h2>
+    
+ 
+    
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/about" class="nav-link">About Us</a>
+        <a href="/contact" class="nav-link">Contact Us</a>
+        <a href="/signin" class="nav-link signin-btn">Sign In</a>
+    </div>
+</div>
+
+<!-- Add this CSS for styling -->
+<style>
+    /* General Navbar Styling */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1); /* Glassmorphism effect */
+        backdrop-filter: blur(10px); /* Glassmorphism blur */
+        padding: 8px 20px; /* Reduced padding for a thinner bar */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Navbar Title Styling */
+    .navbar-title {
+        color: white;
+        font-size: 20px; /* Smaller font size */
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        letter-spacing: 0.5px;
+    }
+
+    /* Navigation Links Container */
+    .nav-links {
+        display: flex;
+        gap: 20px; /* Reduced gap between links */
+        align-items: center;
+    }
+
+    /* Link Styling */
+    .nav-link {
+        color: white;
+        text-decoration: none;
+        font-size: 14px; /* Smaller font size */
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 4px 0; /* Reduced padding */
+    }
+
+    /* Dynamic Underline Effect */
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1.5px; /* Thinner underline */
+        background: white;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    /* Hover Effect for Links */
+    .nav-link:hover {
+        color: #ff6f61;
+        transform: translateY(-2px); /* Smaller hover movement */
+    }
+
+    /* Special Styling for Sign In Button */
+    .signin-btn {
+        background: linear-gradient(135deg, #ff6f61, #ff4a3d);
+        padding: 6px 15px; /* Reduced padding */
+        border-radius: 20px; /* Slightly smaller radius */
+        font-weight: bold;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px; /* Reduced letter spacing */
+        font-size: 12px; /* Smaller font size */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .signin-btn:hover {
+        background: linear-gradient(135deg, #ff4a3d, #ff6f61);
+        transform: scale(1.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+</style>
+        
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        header {
+            background: #333; color: white; padding: 15px 0; text-align: center;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+        }
+        nav a {
+            color: white; text-decoration: none; margin: 0 20px; font-size: 16px;
+            transition: 0.3s;
+        }
+        nav a:hover { color: #4ca1af; }
+        body { padding-top: 60px; text-align: center; }
+    </style>
+
+    
+
+   
+
+<!-- Background Video -->  
+<video autoplay loop muted playsinline style="
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover;
+    z-index: -1; filter: blur(9px) brightness(4);">
+    <source src="static/background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<!-- Main Section -->
+<section class="content-container" style="
+    display: flex; width: 100vw; height: 85vh; margin: auto; padding: 0; 
+    box-sizing: border-box; gap: 20px; position: relative; z-index: 1; justify-content: center; align-items: center;">
+
+   
+    <!-- Text Section (Square) -->
+    <div class="text-container" style="
+        width: 45vh; height: 50vh; background: white; padding: 20px;
+        display: flex; flex-direction: column; justify-content: center; 
+        align-items: center; text-align: center; border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);">
+
+       
+        <h1 style="font-size: 20px; font-weight: bold; margin: 10px 0;">FAKE NEWS DETECTION</h1>
+        <p style="font-size: 14px; color: gray; max-width: 90%; margin-bottom: 10px;">
+            "Fake News Detection using AI & ML – Classifies news as Fake or Real with Machine Learning and NLP."
+        </p>
+
+        <!-- Input Form -->
+        <div class="form-container" style="
+            width: 90%; padding: 15px; border-radius: 10px; 
+            background: #f5f5f5; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+
+            <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">Enter Your News</h3>
+            <input type="text" id="news-input" placeholder="Enter news text"
+                style="width: 100%; padding: 8px; margin-top: 5px; font-size: 14px; border: 1px solid #ccc;">
+            <button id="check-btn"
+                style="width: 100%; margin-top: 8px; padding: 8px; font-size: 14px; background: black; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Check
+            </button>
+
+            <!-- Prediction Button (Inside Box) -->
+            <button id="prediction-btn"
+                style="width: 100%; margin-top: 8px; padding: 8px; font-size: 14px; background: green; color: white; font-weight: bold; border: none; border-radius: 5px;">
+                Prediction: <span id="prediction-result">----</span>
+            </button>
+        </div>
+    </div>
+
+
+
+    
+    <!-- Image Section -->
+    <div class="image-container" style="
+        width: 45vh; height: 50vh; border-radius: 15px;
+        overflow: hidden; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: center; align-items: center;">
+        <img src="{{ url_for('static', filename='Fakenews1.jpg') }}" alt="Fake News Detection"
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        // Preloader Logic: Hide After 3 Seconds
+        window.onload = function () {
+            setTimeout(function () {
+                document.getElementById("preloader").classList.add("fade-out");
+    
+                setTimeout(function () {
+                    document.getElementById("preloader").style.display = "none";
+                    document.getElementById("main-content").style.display = "block";
+                }, 1000);
+    
+            }, 3000);
+        };
+    
+        // News Prediction Logic
+        document.getElementById("check-btn").addEventListener("click", function () {
+            let newsInput = document.getElementById("news-input").value.trim();
+            if (newsInput === "") {
+                alert("Please enter news text!");
+                return;
+            }
+    
+            fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: newsInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultText = data.prediction; 
+                let predictionElement = document.getElementById("prediction-result");
+                let predictionButton = document.getElementById("prediction-btn");
+    
+                // Reset styles
+                predictionElement.innerHTML = ""; 
+                predictionButton.classList.remove("real-btn", "fake-btn");
+    
+                // Create a span for colored text
+                let coloredText = document.createElement("span");
+                coloredText.innerText = resultText;
+                coloredText.classList.add(resultText === "Fake" ? "fake" : "real");
+    
+                // Append span inside the button without changing its design
+                predictionElement.appendChild(coloredText);
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+    
+    
+    
+
+</body>
+
+</html>
